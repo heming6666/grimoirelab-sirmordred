@@ -120,20 +120,6 @@ GITHUB_COMMENTS_MENU = {
     ]
 }
 
-GITHUB_EVENTS = "github-events"
-GITHUB_CLOSED_EVENTS_PANEL = "panels/json/github_events_closed.json"
-GITHUB_CLOSED_EVENTS_IP = "panels/json/github_events-index-pattern.json"
-
-GITHUB_EVENTS_MENU = {
-    'name': 'GitHub Events',
-    'source': GITHUB_EVENTS,
-    'icon': 'default.png',
-    'index-patterns': [GITHUB_CLOSED_EVENTS_IP],
-    'menu': [
-        {'name': 'Closed events', 'panel': GITHUB_CLOSED_EVENTS_PANEL}
-    ]
-}
-
 GITHUB_REPOS = "github-repos"
 GITHUB_REPOS_PANEL_OVERALL = "panels/json/github_repositories.json"
 GITHUB_REPOS_IP = "panels/json/github_repositories-index-pattern.json"
@@ -185,6 +171,60 @@ GITLAB_MERGES_MENU = {
         {'name': 'Backlog', 'panel': GITLAB_MERGES_PANEL_BACKLOG},
         {'name': 'Timing', 'panel': GITLAB_MERGES_PANEL_TIMING},
         {'name': 'Efficiency', 'panel': GITLAB_MERGES_PANEL_EFFICIENCY}
+    ]
+}
+
+GITEE_ISSUES = "gitee-issues"
+GITEE_ISSUES_PANEL_OVERALL = "panels/json/gitee_issues.json"
+GITEE_ISSUES_PANEL_BACKLOG = "panels/json/gitee_issues_backlog.json"
+GITEE_ISSUES_PANEL_TIMING = "panels/json/gitee_issues_timing.json"
+GITEE_ISSUES_PANEL_EFFICIENCY = "panels/json/gitee_issues_efficiency.json"
+GITEE_ISSUES_IP = "panels/json/gitee_issues-index-pattern.json"
+
+GITEE_ISSUES_MENU = {
+    'name': 'Gitee Issues',
+    'source': GITEE_ISSUES,
+    'icon': 'default.png',
+    'index-patterns': [GITEE_ISSUES_IP],
+    'menu': [
+        {'name': 'Overview', 'panel': GITEE_ISSUES_PANEL_OVERALL},
+        {'name': 'Backlog', 'panel': GITEE_ISSUES_PANEL_BACKLOG},
+        {'name': 'Timing', 'panel': GITEE_ISSUES_PANEL_TIMING},
+        {'name': 'Efficiency', 'panel': GITEE_ISSUES_PANEL_EFFICIENCY}
+    ]
+}
+
+GITEE_PULLS = "gitee-pulls"
+GITEE_PULLS_PANEL_OVERALL = "panels/json/gitee_pull_requests.json"
+GITEE_PULLS_PANEL_BACKLOG = "panels/json/gitee_pull_requests_backlog.json"
+GITEE_PULLS_PANEL_TIMING = "panels/json/gitee_pull_requests_timing.json"
+GITEE_PULLS_PANEL_EFFICIENCY = "panels/json/gitee_pull_requests_efficiency.json"
+GITEE_PULLS_IP = "panels/json/gitee_pull_requests-index-pattern.json"
+
+GITEE_PULLS_MENU = {
+    'name': 'Gitee PRs',
+    'source': GITEE_PULLS,
+    'icon': 'default.png',
+    'index-patterns': [GITEE_PULLS_IP],
+    'menu': [
+        {'name': 'Overview', 'panel': GITEE_PULLS_PANEL_OVERALL},
+        {'name': 'Backlog', 'panel': GITEE_PULLS_PANEL_BACKLOG},
+        {'name': 'Timing', 'panel': GITEE_PULLS_PANEL_TIMING},
+        {'name': 'Efficiency', 'panel': GITEE_PULLS_PANEL_EFFICIENCY}
+    ]
+}
+
+GITEE_REPOS = "gitee-repos"
+GITEE_REPOS_PANEL_OVERALL = "panels/json/gitee_repositories.json"
+GITEE_REPOS_IP = "panels/json/gitee_repositories-index-pattern.json"
+
+GITEE_REPOS_MENU = {
+    'name': 'Gitee Repositories',
+    'source': GITEE_REPOS,
+    'icon': 'default.png',
+    'index-patterns': [GITEE_REPOS_IP],
+    'menu': [
+        {'name': 'Overview', 'panel': GITEE_REPOS_PANEL_OVERALL}
     ]
 }
 
@@ -307,9 +347,6 @@ class TaskPanels(Task):
             self.panels[GITHUB_COMMENTS] = [GITHUB_ISSUE_COMMENTS_PANEL, GITHUB_PULL_COMMENTS_PANEL,
                                             GITHUB_ISSUE_COMMENTS_IP, GITHUB_PULL_COMMENTS_IP]
 
-        if self.conf['panels'][GITHUB_EVENTS]:
-            self.panels[GITHUB_EVENTS] = [GITHUB_CLOSED_EVENTS_PANEL, GITHUB_CLOSED_EVENTS_IP]
-
         if self.conf['panels'][GITHUB_REPOS]:
             self.panels[GITHUB_REPOS] = [GITHUB_REPOS_PANEL_OVERALL, GITHUB_REPOS_IP]
 
@@ -322,6 +359,19 @@ class TaskPanels(Task):
             self.panels[GITLAB_MERGES] = [GITLAB_MERGES_PANEL_BACKLOG, GITLAB_MERGES_PANEL_OVERALL,
                                           GITLAB_MERGES_PANEL_TIMING, GITLAB_MERGES_PANEL_EFFICIENCY,
                                           GITLAB_MERGES_IP]
+
+        if self.conf['panels'][GITEE_ISSUES]:
+            self.panels[GITEE_ISSUES] = [GITEE_ISSUES_PANEL_BACKLOG, GITEE_ISSUES_PANEL_OVERALL,
+                                          GITEE_ISSUES_PANEL_TIMING, GITEE_ISSUES_PANEL_EFFICIENCY,
+                                          GITEE_ISSUES_IP]
+
+        if self.conf['panels'][GITEE_PULLS]:
+            self.panels[GITEE_PULLS] = [GITEE_PULLS_PANEL_BACKLOG, GITEE_PULLS_PANEL_OVERALL,
+                                          GITEE_PULLS_PANEL_TIMING, GITEE_PULLS_PANEL_EFFICIENCY,
+                                          GITEE_PULLS_IP]
+
+        if self.conf['panels'][GITEE_REPOS]:
+            self.panels[GITEE_REPOS] = [GITEE_REPOS_PANEL_OVERALL, GITEE_REPOS_IP]
 
         if self.conf['panels'][MATTERMOST]:
             self.panels[MATTERMOST] = [MATTERMOST_PANEL, MATTERMOST_IP]
@@ -337,7 +387,6 @@ class TaskPanels(Task):
 
     def __kibiter_version(self):
         """ Get the kibiter vesion.
-
         :param major: major Elasticsearch version
         """
         version = None
@@ -443,10 +492,8 @@ class TaskPanels(Task):
 
     def create_dashboard(self, panel_file, data_sources=None, strict=True):
         """Upload a panel to Elasticsearch if it does not exist yet.
-
         If a list of data sources is specified, upload only those
         elements (visualizations, searches) that match that data source.
-
         :param panel_file: file name of panel (dashobard) to upload
         :param data_sources: list of data sources
         :param strict: only upload a dashboard if it is newer than the one already existing
@@ -542,9 +589,6 @@ class TaskPanelsMenu(Task):
         if self.conf['panels'][GITHUB_COMMENTS]:
             self.panels_menu.append(GITHUB_COMMENTS_MENU)
 
-        if self.conf['panels'][GITHUB_EVENTS]:
-            self.panels_menu.append(GITHUB_EVENTS_MENU)
-
         if self.conf['panels'][GITHUB_REPOS]:
             self.panels_menu.append(GITHUB_REPOS_MENU)
 
@@ -553,6 +597,15 @@ class TaskPanelsMenu(Task):
 
         if self.conf['panels'][GITLAB_MERGES]:
             self.panels_menu.append(GITLAB_MERGES_MENU)
+
+        if self.conf['panels'][GITEE_ISSUES]:
+            self.panels_menu.append(GITEE_ISSUES_MENU)
+
+        if self.conf['panels'][GITEE_PULLS]:
+            self.panels_menu.append(GITEE_PULLS_MENU)
+
+        if self.conf['panels'][GITEE_REPOS]:
+            self.panels_menu.append(GITEE_REPOS_MENU)
 
         if self.conf['panels'][MATTERMOST]:
             self.panels_menu.append(MATTERMOST_MENU)
@@ -584,7 +637,7 @@ class TaskPanelsMenu(Task):
         for entry in self.panels_menu:
             ds = entry['source']
             if ds in self.conf.keys() or ds in [COMMUNITY_SOURCE, KAFKA_SOURCE, GITLAB_ISSUES, GITLAB_MERGES,
-                                                MATTERMOST, GITHUB_COMMENTS, GITHUB_REPOS, GITHUB_EVENTS,
+                                                GITEE_ISSUES,GITEE_PULLS, GITEE_REPOS, MATTERMOST, GITHUB_COMMENTS, GITHUB_REPOS,
                                                 COCOM_SOURCE, COLIC_SOURCE]:
                 active_ds.append(ds)
         logger.debug("Active data sources for menu: %s", active_ds)
@@ -593,11 +646,9 @@ class TaskPanelsMenu(Task):
 
     def __upload_title(self, kibiter_major):
         """Upload to Kibiter the title for the dashboard.
-
         The title is shown on top of the dashboard menu, and is Usually
         the name of the project being dashboarded.
         This is done only for Kibiter 6.x.
-
         :param kibiter_major: major version of kibiter
         """
 
@@ -631,7 +682,6 @@ class TaskPanelsMenu(Task):
 
     def __create_dashboard_menu(self, dash_menu, kibiter_major):
         """Create the menu definition to access the panels in a dashboard.
-
         :param          menu: dashboard menu to upload
         :param kibiter_major: major version of kibiter
         """
@@ -669,9 +719,7 @@ class TaskPanelsMenu(Task):
 
     def __remove_dashboard_menu(self, kibiter_major):
         """Remove existing menu for dashboard, if any.
-
         Usually, we remove the menu before creating a new one.
-
         :param kibiter_major: major version of kibiter
         """
         logger.info("Removing old dashboard menu, if any")

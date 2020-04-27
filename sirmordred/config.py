@@ -41,7 +41,6 @@ class Config():
 
     def __init__(self, conf_file, conf_list=[]):
         """Initialize object.
-
         The object can be initialized with a configuration file,
         and, optionally, with a list of other configuration files.
         If the list of other configuration files exist, it will
@@ -49,7 +48,6 @@ class Config():
         Values set in a file read later will overwrite values set
         in files read earlier. Values not set by any file will
         be set to the default values, when possible.
-
         :param conf_file; configuration file name
         :param conf_list: list of other configuration files (default: empty)
         """
@@ -292,12 +290,6 @@ class Config():
                     "type": bool,
                     "description": "Enable GitHub comments menu"
                 },
-                "github-events": {
-                    "optional": True,
-                    "default": False,
-                    "type": bool,
-                    "description": "Enable GitHub events menu"
-                },
                 "github-repos": {
                     "optional": True,
                     "default": False,
@@ -315,6 +307,24 @@ class Config():
                     "default": False,
                     "type": bool,
                     "description": "Enable GitLab merge requests menu"
+                },
+                "gitee-issues": {
+                    "optional": True,
+                    "default": False,
+                    "type": bool,
+                    "description": "Enable Gitee issues menu"
+                },
+                "gitee-pulls": {
+                    "optional": True,
+                    "default": False,
+                    "type": bool,
+                    "description": "Enable Gitee pull requests menu"
+                },
+                "gitee-repos": {
+                    "optional": True,
+                    "default": False,
+                    "type": bool,
+                    "description": "Enable Gitee repo requests menu"
                 },
                 "mattermost": {
                     "optional": True,
@@ -642,10 +652,8 @@ class Config():
 
     def _add_to_conf(self, new_conf):
         """Add new configuration to self.conf.
-
         Adds configuration parameters in new_con to self.conf.
         If they already existed in conf, overwrite them.
-
         :param new_conf: new configuration, to add
         """
 

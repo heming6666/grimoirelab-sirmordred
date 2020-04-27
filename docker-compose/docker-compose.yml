@@ -1,0 +1,53 @@
+version: "2.2"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.1.4
+    command: /elasticsearch/bin/elasticsearch -Enetwork.bind_host=0.0.0.0 -Ehttp.max_content_length=2000mb
+    ports:
+      - 9200:9200
+    environment:
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+
+  kibiter:
+    restart: on-failure:5
+    image: bitergia/kibiter:optimized-v6.1.4-3
+    environment:
+      - PROJECT_NAME=Grimoire_Gitee_Demo
+      - NODE_OPTIONS=--max-old-space-size=1000
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    links:
+      - elasticsearch
+    ports:
+      - 5601:5601
+
+  mariadb:
+    restart: on-failure:5
+    image: mariadb:10.0
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=demo_sh
+    command: --wait_timeout=2592000 --interactive_timeout=2592000 --max_connections=300
+
+  sirmordred:
+    restart: on-failure:5
+    image: heming6666/sirmordred:latest
+    volumes:
+      - /setup.cfg:/setup.cfg
+      - /projects.json:/projects.json
+      - /aliaes.json:/aliaes.json
+      - /logs:/logs
+    depends_on:
+      - elasticsearch
+      - kibiter
+      - mariadb
+    links:
+      - elasticsearch
+      - kibiter
+      - mariadb
+    mem_limit: 4g

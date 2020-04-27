@@ -1,31 +1,30 @@
 {
-    "grimoire": {
+    "gitee-example": {
+        "gitee":[
+            "https://gitee.com/willemjiang/gitee-example",
+            "https://gitee.com/mindspore/mindspore"
+        ],
+        "gitee:pull":[
+            "https://gitee.com/willemjiang/gitee-example",
+            "https://gitee.com/mindspore/mindspore"
+        ],
+        "gitee:repo":[
+            "https://gitee.com/willemjiang/gitee-example",
+            "https://gitee.com/mindspore/mindspore"
+        ]
+    },
+    "hypertrons": {
         "git": [
-            "https://github.com/chaoss/grimoirelab-perceval"
+            "https://github.com/hypertrons/hypertrons.git"
         ],
-        "cocom": [
-            "https://github.com/chaoss/grimoirelab-toolkit"
+        "github": [
+            "https://github.com/hypertrons/hypertrons"
         ],
-        "colic": [
-            "https://github.com/chaoss/grimoirelab-toolkit"
-        ],
-        "*github": [
-            "https://github.com/chaoss/grimoirelab-perceval"
-        ],
-        "*github:pull": [
-            "https://github.com/chaoss/grimoirelab-perceval"
+        "github:pull": [
+            "https://github.com/hypertrons/hypertrons"
         ],
         "github:repo": [
-            "https://github.com/chaoss/grimoirelab-perceval"
-        ],
-        "jenkins": [
-           "https://build.opnfv.org/ci"
-        ],
-        "gitlab:issue": [
-            "https://gitlab.com/gitlab-org/gitlab-ce"
-        ],
-        "gitlab:merge": [
-            "https://gitlab.com/gitlab-org/gitlab-ce"
+            "https://github.com/hypertrons/hypertrons"
         ]
     }
 }
